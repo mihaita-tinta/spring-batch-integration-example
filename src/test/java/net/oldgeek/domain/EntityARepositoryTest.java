@@ -21,6 +21,8 @@ public class EntityARepositoryTest {
 		a.setName("abc");
 		EntityA saved = repo.saveAndFlush(a);
 		assertNotNull(saved.getId());
+		
+		repo.findAllByOrderByName().forEach(System.out::println);
 	}
 
 }

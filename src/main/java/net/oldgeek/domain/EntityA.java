@@ -31,4 +31,9 @@ public class EntityA {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return "EntityA [id=" + id + ", name=" + name + "]";
+	}
+
 }
