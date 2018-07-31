@@ -1,6 +1,9 @@
 package net.oldgeek;
 
+import java.util.Map;
+
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -29,8 +32,12 @@ public class BatchConfig {
 	Step sampleStep() {
 		return stepBuilderFactory.get("sampleStep")//
 				.<String, String>chunk(5) //
-				.reader(itemReader(null)) //
-				.writer(i -> i.stream().forEach(j -> System.out.println(j))) //
+				.reader(itemReader(null, null)) //
+				.writer(i -> {
+					System.out.println("new chunk");
+					i.stream().forEach(j -> System.out.println(j));
+				
+				}) //
 				.build();
 	}
 
@@ -45,7 +52,8 @@ public class BatchConfig {
 
 	@Bean
 	@StepScope
-	FlatFileItemReader<String> itemReader(@Value("#{jobParameters[file_path]}") String filePath) {
+	FlatFileItemReader<String> itemReader(@Value("#{jobParameters[file_path]}") String filePath,
+										@Value("#{jobParameters}") Map<String, Object> params) {
 		FlatFileItemReader<String> reader = new FlatFileItemReader<String>();
 		final FileSystemResource fileResource = new FileSystemResource(filePath);
 		reader.setResource(fileResource);
