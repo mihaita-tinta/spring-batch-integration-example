@@ -25,20 +25,7 @@ public class BatchTests {
 	@Autowired
 	private JobLauncherTestUtils jobLauncherTestUtils;
 
-	@Autowired
-	EntityARepository repo;
 	
-	@Before
-	public void before() {
-
-		IntStream.range(0, 100)
-			.mapToObj(i -> {
-				EntityA a = new EntityA();
-				a.setName("entity-" + i);
-				return a;
-			})
-			.forEach(repo :: save);
-	}
 	@Test
 	public void testSampleJob() throws Exception {
 		JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
