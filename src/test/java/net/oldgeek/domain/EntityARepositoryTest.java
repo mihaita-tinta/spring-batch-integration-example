@@ -13,16 +13,35 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class EntityARepositoryTest {
 	
 	@Autowired
-	EntityARepository repo;
+	EntityARepository repoA;
+	
+	@Autowired
+	EntityBRepository repoB;
 	
 	@Test
 	public void test() {
 		EntityA a = new EntityA();
 		a.setName("abc");
-		EntityA saved = repo.saveAndFlush(a);
+		EntityA saved = repoA.saveAndFlush(a);
 		assertNotNull(saved.getId());
 		
-		repo.findAllByOrderByName().forEach(System.out::println);
+		repoA.findAllByOrderByName().forEach(System.out::println);
 	}
 
+	@Test
+	public void testSaveAWithB() {
+		
+		EntityB b = new EntityB();
+		b.setName("bbb");
+		
+		repoB.save(b);
+		
+		EntityA a = new EntityA();
+		a.setName("abc");
+		a.setB(b);
+		EntityA saved = repoA.saveAndFlush(a);
+		assertNotNull(saved.getId());
+		
+		repoA.findAllByOrderByName().forEach(System.out::println);
+	}
 }

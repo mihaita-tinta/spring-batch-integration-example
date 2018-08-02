@@ -6,19 +6,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
-public class EntityA {
+public class EntityB {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	
 	private String name;
-	
-	@OneToOne
-	private EntityB b;
 
 	public UUID getId() {
 		return id;
@@ -36,17 +32,9 @@ public class EntityA {
 		this.name = name;
 	}
 
-	public EntityB getB() {
-		return b;
-	}
-
-	public void setB(EntityB b) {
-		this.b = b;
-	}
-
 	@Override
 	public String toString() {
-		return "EntityA [id=" + id + ", name=" + name + "]";
+		return "EntityB [id=" + id + ", name=" + name + "]";
 	}
 
 }

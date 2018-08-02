@@ -35,9 +35,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @ActiveProfiles("mssql")
 public class EntityARepositoryMsSqlTest {
+
+	@Autowired
+	EntityARepository repoA;
 	
 	@Autowired
-	EntityARepository repo;
+	EntityBRepository repoB;
 	
 	@Test
 	public void test() {
@@ -45,11 +48,11 @@ public class EntityARepositoryMsSqlTest {
 
 		EntityA a = new EntityA();
 		a.setName("abc");
-		EntityA saved = repo.saveAndFlush(a);
+		EntityA saved = repoA.saveAndFlush(a);
 		assertNotNull(saved.getId());
 		
-		repo.findAllByOrderByName().forEach(System.out::println);
-		saved = repo.findOne(a.getId());
+		repoA.findAllByOrderByName().forEach(System.out::println);
+		saved = repoA.findOne(a.getId());
 		assertNotNull(saved);
 	}
 
@@ -63,6 +66,23 @@ public class EntityARepositoryMsSqlTest {
 				a.setName("abc" + i);
 				return a;
 			}).collect(Collectors.toList());
-		repo.save(list);
+		repoA.save(list);
+	}
+	
+	@Test
+	public void testSaveAWithB() {
+		
+		EntityB b = new EntityB();
+		b.setName("bbb");
+		
+		repoB.save(b);
+		
+		EntityA a = new EntityA();
+		a.setName("abc");
+		a.setB(b);
+		EntityA saved = repoA.saveAndFlush(a);
+		assertNotNull(saved.getId());
+		
+		repoA.findAllByB(b).forEach(System.out::println);
 	}
 }

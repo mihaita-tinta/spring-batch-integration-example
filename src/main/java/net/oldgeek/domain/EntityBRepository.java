@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EntityARepository extends JpaRepository<EntityA, UUID> {
+public interface EntityBRepository extends JpaRepository<EntityB, UUID> {
 
-	List<EntityA> findAllByOrderByName();
-	List<EntityA> findAllByB(EntityB b);
+	List<EntityB> findAllByOrderByName();
 }
