@@ -3,6 +3,7 @@ package net.oldgeek.domain;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -67,6 +69,16 @@ public class EntityARepositoryMsSqlTest {
 				return a;
 			}).collect(Collectors.toList());
 		repoA.save(list);
+	}
+	
+	@Sql("/entitya-mssql.sql")
+	@Test
+	public void testFindOne() {
+		repoA.findAllByOrderByName().forEach(System.out::println);
+		EntityA a = repoA.findOne(UUID.fromString("099601ae-e099-f54e-85bb-ad90dc302e70"));
+		//AE019609-99E0-4EF5-85BB-AD90DC302E70 TODO not exactly the same
+		//099601ae-e099-f54e-85bb-ad90dc302e70
+		assertNotNull(a);
 	}
 	
 	@Test
